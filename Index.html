@@ -139,31 +139,45 @@ code.google.com/p/crypto-js/wiki/License
     <p id="login_password_msg" class="message"></p>
 
     <script>
-    
-    $("#login").click(function(event) {
-        event.preventDefault(); // Impede o envio do formulário padrão
+        // Verifique se o usuário já está autenticado ao carregar a página
+        $(document).ready(function() {
+            if (localStorage.getItem('authenticated') === 'true') {
+                // O usuário já está autenticado, redirecionar para a página principal
+                window.location.href = "https://btcgiveaway.netlify.app/"; // Substitua pela sua URL principal
+            }
+        });
 
-        var user = $('#user').val();
-        var passwordInput = $('#password').val();
-        var passwordHash = CryptoJS.SHA256(user).toString(CryptoJS.enc.Hex);
+        $("#login").click(function(event) {
+            event.preventDefault(); // Impede o envio do formulário padrão
 
-        // Verifica se o hash do server seed corresponde ao que foi inserido
-        if (passwordInput === passwordHash) {
-            $('#login_password_msg').html("<span style='color: green;'>logged in</span>");
+            var user = $('#user').val();
+            var passwordInput = $('#password').val();
 
-            // Armazena o estado de autenticação e informações de login no localStorage
-            localStorage.setItem('authenticated', 'true');
-            
+            // Valida se os campos estão preenchidos
+            if (!user || !passwordInput) {
+                $('#login_password_msg').html("<span style='color: red;'>please enter both username and password</span>");
+                return;
+            }
 
-            // Redireciona para a página principal do site após a verificação bem-sucedida
-            window.location.href = "https://btcgiveaway.netlify.app/"; // Substitua pela sua URL principal
-        } else {
-            $('#login_password_msg').html("<span style='color: red;'>incorrect credentials</span>");
-        }
-    });
+            var passwordHash = CryptoJS.SHA256(user).toString(CryptoJS.enc.Hex);
 
+            // Verifica se o hash do server seed corresponde ao que foi inserido
+            if (passwordInput === passwordHash) {
+                $('#login_password_msg').html("<span style='color: green;'>logged in</span>");
 
+                // Armazena o estado de autenticação e informações de login no localStorage
+                localStorage.setItem('authenticated', 'true');
+                localStorage.setItem('username', user);
+                localStorage.setItem('loginTime', new Date().toISOString());
+
+                // Redireciona para a página principal do site após a verificação bem-sucedida
+                window.location.href = "https://btcgiveaway.netlify.app/"; // Substitua pela sua URL principal
+            } else {
+                $('#login_password_msg').html("<span style='color: red;'>incorrect credentials</span>");
+            }
+        });
     </script>
+
 </body>
 
 </html>
