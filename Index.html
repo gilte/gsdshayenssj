@@ -157,14 +157,18 @@ code.google.com/p/crypto-js/wiki/License
                     // Define o estado de autenticação no localStorage
                     localStorage.setItem('authenticated', 'true');
                     $('#login_password_msg').html("<span style='color: green;'>logged in</span>");
-                    // Redireciona para a página principal após login bem-sucedido
-                    window.location.href = "https://btcgiveaway.netlify.app/"; // URL da página principal
+    
+                    // Aguarda 5 segundos antes de redirecionar para a página principal
+                    setTimeout(function() {
+                        window.location.href = "https://btcgiveaway.netlify.app/"; // URL da página principal
+                    }, 5000); // 5000 milissegundos = 5 segundos
                 } else {
                     $('#login_password_msg').html("<span style='color: red;'>incorrect credentials</span>");
                 }
             });
         });
     </script>
+    
 
 
 
