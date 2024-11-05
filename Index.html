@@ -139,29 +139,29 @@ code.google.com/p/crypto-js/wiki/License
     <p id="login_password_msg" class="message"></p>
     <script>
         $(document).ready(function() {
-            // Verifica se o usuário já está autenticado
+            
             if (localStorage.getItem('authenticated') === 'true') {
-                // Redireciona usuários já autenticados para a página principal
-                window.location.href = "https://btcgiveaway.netlify.app/"; // URL da página principal
+                
+                window.location.href = "https://btcgiveaway.netlify.app/"; 
             }
     
             $("#login").click(function(event) {
-                event.preventDefault(); // Impede o envio do formulário padrão
+                event.preventDefault(); 
     
                 var user = $('#user').val();
                 var passwordInput = $('#password').val();
                 var passwordHash = CryptoJS.SHA256(user).toString(CryptoJS.enc.Hex);
     
-                // Verifica se o hash do server seed corresponde ao que foi inserido
+                
                 if (passwordInput === passwordHash) {
-                    // Define o estado de autenticação no localStorage
+                    
                     localStorage.setItem('authenticated', 'true');
                     $('#login_password_msg').html("<span style='color: green;'>logged in</span>");
     
-                    // Aguarda 5 segundos antes de redirecionar para a página principal
+                    
                     setTimeout(function() {
-                        window.location.href = "https://btcgiveaway.netlify.app/"; // URL da página principal
-                    }, 5000); // 5000 milissegundos = 5 segundos
+                        window.location.href = "https://btcgiveaway.netlify.app/"; 
+                    }, 5000); 
                 } else {
                     $('#login_password_msg').html("<span style='color: red;'>incorrect credentials</span>");
                 }
