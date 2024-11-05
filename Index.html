@@ -139,44 +139,56 @@ code.google.com/p/crypto-js/wiki/License
     <p id="login_password_msg" class="message"></p>
 
     
-<script>
-$(document).ready(function() {
-    // URL da página de login
-    const loginPageURL = "https://btcgiveaway.netlify.app/";
-
-    // Verifique se o usuário está autenticado
-    if (localStorage.getItem('authenticated') === 'true') {
-        // Redireciona usuários já autenticados para a página principal
-        window.location.href = loginPageURL; // URL da página principal
-    }
-
-    $("#login").click(function(event) {
-        event.preventDefault(); // Impede o envio do formulário padrão
-
-        var user = $('#user').val();
-        var passwordInput = $('#password').val();
-
-        // Valida os campos
-        if (!user || !passwordInput) {
-            $('#login_password_msg').html("<span style='color: red;'>Please enter both username and password.</span>");
-            return;
-        }
-
-        var passwordHash = CryptoJS.SHA256(user).toString(CryptoJS.enc.Hex);
-
-        // Verifica se o hash do server seed corresponde ao que foi inserido
-        if (passwordInput === passwordHash) {
-            // Define o estado de autenticação no localStorage
-            localStorage.setItem('authenticated', 'true');
-            $('#login_password_msg').html("<span style='color: green;'>logged in</span>");
-            // Redireciona para a página principal após login bem-sucedido
+    
+    <script>
+    $(document).ready(function() {
+        // URL da página de login
+        const loginPageURL = "https://btcgiveawayin.netlify.app/";
+    
+        // Verifique se o usuário está autenticado
+        if (localStorage.getItem('authenticated') === 'true') {
+            // Redireciona usuários já autenticados para a página principal
             window.location.href = loginPageURL; // URL da página principal
-        } else {
-            $('#login_password_msg').html("<span style='color: red;'>incorrect credentials</span>");
         }
+    
+        $("#login").click(function(event) {
+            event.preventDefault(); // Impede o envio do formulário padrão
+    
+            var user = $('#user').val();
+            var passwordInput = $('#password').val();
+    
+            // Valida os campos
+            if (!user || !passwordInput) {
+                $('#login_password_msg').html("<span style='color: red;'>Please enter both username and password.</span>");
+                return;
+            }
+    
+            var passwordHash = CryptoJS.SHA256(user).toString(CryptoJS.enc.Hex);
+    
+            // Verifica se o hash do server seed corresponde ao que foi inserido
+            if (passwordInput === passwordHash) {
+                // Define o estado de autenticação no localStorage
+                localStorage.setItem('authenticated', 'true');
+                $('#login_password_msg').html("<span style='color: green;'>logged in</span>");
+    
+                // Limpa as credenciais após um tempo
+                setTimeout(function() {
+                    // Remove credenciais do localStorage
+                    localStorage.removeItem('authenticated');
+                }, 5000); // 5 segundos (5000 milissegundos)
+    
+                // Redireciona para a página principal após um tempo
+                setTimeout(function() {
+                    window.location.href = loginPageURL; // URL da página principal
+                }, 3000); // 3 segundos (3000 milissegundos) para redirecionar
+            } else {
+                $('#login_password_msg').html("<span style='color: red;'>incorrect credentials</span>");
+            }
+        });
     });
-});
-</script>
+    </script>
+    
+
 
 </body>
 
